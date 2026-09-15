@@ -22,8 +22,19 @@
   --nav-h:72px;--safe-bot:env(safe-area-inset-bottom,0px);--safe-top:env(safe-area-inset-top,0px);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html{height:100%;overscroll-behavior:none;}
-body{background:var(--bg);color:var(--txt);font-family:-apple-system,'Segoe UI',system-ui,sans-serif;height:100%;overflow:hidden;-webkit-font-smoothing:antialiased;}
+html{
+  height:100%;height:100dvh;
+  background:#0a0a12; /* match --bg exactly so no colour bleed */
+  overscroll-behavior:none;
+}
+body{
+  background:#0a0a12;
+  color:var(--txt);
+  font-family:-apple-system,'Segoe UI',system-ui,sans-serif;
+  height:100%;height:100dvh;
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
 
 /* ── Animated background orbs ── */
 body::before,body::after{content:'';position:fixed;border-radius:50%;pointer-events:none;z-index:0;animation:orbFloat 12s ease-in-out infinite;}
@@ -35,7 +46,7 @@ body::after{width:300px;height:300px;background:radial-gradient(circle,rgba(6,18
 .content{
   position:fixed;
   top:0;left:0;right:0;
-  bottom:calc(var(--nav-h) + var(--safe-bot));
+  bottom:calc(72px + env(safe-area-inset-bottom, 0px));
   overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
   scroll-behavior:smooth;
@@ -59,21 +70,20 @@ body::after{width:300px;height:300px;background:radial-gradient(circle,rgba(6,18
   pointer-events:none;
 }
 
-/* Nav FIXED at the bottom — fills all the way to screen edge */
+/* Nav FIXED at the bottom — fills all the way to screen edge incl. home indicator */
 .bnav{
   position:fixed;
   bottom:0;left:0;right:0;
-  display:flex;align-items:flex-start; /* items align at top of nav, safe area fills below */
+  display:flex;align-items:stretch;
   background:rgba(10,10,20,.92);
   backdrop-filter:blur(28px) saturate(200%);
   -webkit-backdrop-filter:blur(28px) saturate(200%);
   border-top:1px solid rgba(255,255,255,.08);
   box-shadow:0 -8px 40px rgba(0,0,0,.5);
-  height:calc(var(--nav-h) + var(--safe-bot));
-  padding-bottom:var(--safe-bot);
+  /* Use env() directly — no variable chain that could fail */
+  height:calc(72px + env(safe-area-inset-bottom, 0px));
+  padding-bottom:env(safe-area-inset-bottom, 0px);
   z-index:50;
-  /* Extend background color below home indicator */
-  box-sizing:content-box;
 }
 .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;border:none;background:none;color:var(--txt3);transition:color .25s,transform .2s;padding:8px 0;font-size:10px;font-weight:600;letter-spacing:.3px;position:relative;}
 .bnav-item .bi{font-size:22px;line-height:1;transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
