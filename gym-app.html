@@ -34,28 +34,46 @@ body::after{width:300px;height:300px;background:radial-gradient(circle,rgba(6,18
 .shell{display:block;height:100vh;height:100dvh;position:relative;z-index:1;}
 .content{
   position:fixed;
-  top:var(--safe-top);left:0;right:0;
+  top:0;left:0;right:0;
   bottom:calc(var(--nav-h) + var(--safe-bot));
   overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
   scroll-behavior:smooth;
   padding-bottom:12px;
 }
-.page{padding-top:max(20px, calc(var(--safe-top) + 8px)) !important;}
+/* Pages start below status bar */
+.page{padding-top:calc(var(--safe-top) + 24px) !important;}
 
-/* Nav FIXED at the bottom */
+/* Frosted glass mask over status bar — content scrolls under it smoothly */
+.top-mask{
+  position:fixed;
+  top:0;left:0;right:0;
+  height:calc(var(--safe-top) + 20px);
+  background:linear-gradient(to bottom,
+    rgba(10,10,18,1) 0%,
+    rgba(10,10,18,.85) 55%,
+    rgba(10,10,18,0) 100%);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  z-index:35;
+  pointer-events:none;
+}
+
+/* Nav FIXED at the bottom — fills all the way to screen edge */
 .bnav{
   position:fixed;
   bottom:0;left:0;right:0;
-  display:flex;align-items:stretch;
-  background:rgba(10,10,20,.82);
-  backdrop-filter:blur(24px) saturate(180%);
-  -webkit-backdrop-filter:blur(24px) saturate(180%);
-  border-top:1px solid rgba(255,255,255,.07);
-  box-shadow:0 -8px 32px rgba(0,0,0,.4);
+  display:flex;align-items:flex-start; /* items align at top of nav, safe area fills below */
+  background:rgba(10,10,20,.92);
+  backdrop-filter:blur(28px) saturate(200%);
+  -webkit-backdrop-filter:blur(28px) saturate(200%);
+  border-top:1px solid rgba(255,255,255,.08);
+  box-shadow:0 -8px 40px rgba(0,0,0,.5);
   height:calc(var(--nav-h) + var(--safe-bot));
   padding-bottom:var(--safe-bot);
   z-index:50;
+  /* Extend background color below home indicator */
+  box-sizing:content-box;
 }
 .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;border:none;background:none;color:var(--txt3);transition:color .25s,transform .2s;padding:8px 0;font-size:10px;font-weight:600;letter-spacing:.3px;position:relative;}
 .bnav-item .bi{font-size:22px;line-height:1;transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
@@ -273,7 +291,8 @@ select option{background:var(--card);}
   .bnav-center{flex:none;padding:8px;}
   .bnav-fab{width:auto;height:44px;border-radius:var(--rs);font-size:16px;margin-bottom:0;padding:0 16px;gap:8px;animation:none;}
   .bnav-fab::after{content:'Training starten';font-size:13px;font-weight:700;}
-  .page{padding:28px 28px;}
+  .page{padding:28px 28px !important;}
+  .top-mask{display:none;}
   .modal{border-radius:20px;max-width:520px;margin:auto;border:1px solid rgba(255,255,255,.09);border-bottom:1px solid rgba(255,255,255,.09);}
   .overlay{align-items:center;}
   .stats-row{grid-template-columns:1fr 1fr 1fr 1fr;}
@@ -285,6 +304,8 @@ select option{background:var(--card);}
 </style>
 </head>
 <body>
+<!-- Frosted glass mask over iPhone status bar -->
+<div class="top-mask"></div>
 <div class="shell">
 <nav class="bnav" id="bnav">
   <button class="bnav-item active" data-p="dashboard" onclick="showPage('dashboard')"><span class="bi">📊</span><span>Dashboard</span></button>
