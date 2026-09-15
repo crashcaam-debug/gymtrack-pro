@@ -19,7 +19,7 @@
   --green:#10b981;--red:#ef4444;--yellow:#f59e0b;--blue:#3b82f6;--pink:#ec4899;
   --txt:#f1f5f9;--txt2:#94a3b8;--txt3:#475569;
   --brd:#2a2a42;--r:16px;--rs:11px;
-  --nav-h:72px;--safe-bot:env(safe-area-inset-bottom,0px);
+  --nav-h:72px;--safe-bot:env(safe-area-inset-bottom,0px);--safe-top:env(safe-area-inset-top,0px);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html{height:100%;overscroll-behavior:none;}
@@ -34,13 +34,14 @@ body::after{width:300px;height:300px;background:radial-gradient(circle,rgba(6,18
 .shell{display:block;height:100vh;height:100dvh;position:relative;z-index:1;}
 .content{
   position:fixed;
-  top:0;left:0;right:0;
+  top:var(--safe-top);left:0;right:0;
   bottom:calc(var(--nav-h) + var(--safe-bot));
   overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
   scroll-behavior:smooth;
   padding-bottom:12px;
 }
+.page{padding-top:max(20px, calc(var(--safe-top) + 8px)) !important;}
 
 /* Nav FIXED at the bottom */
 .bnav{
